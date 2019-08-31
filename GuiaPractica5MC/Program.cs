@@ -6,23 +6,31 @@ using System.Threading.Tasks;
 
 namespace GuiaPractica5MC
 {
-    class Program
+    public class Program
     {
+        #region atributos
+        private static bool isNumber;
+        #endregion
+
         static void Main(string[] args)
         {
             int opc = 0;
+            bool isNumber;
             do
             {
-                Console.Clear();
-                Console.WriteLine("Escoja una opcion");
-                Console.WriteLine("1 - Ejercicio 1");
-                Console.WriteLine("2 - Ejercicio 2");
-                Console.WriteLine("3 - Ejercicio 3");
-                Console.WriteLine("4 - Ejercicio 4");
-                Console.WriteLine("5 - Ejercicio 5");
-                Console.WriteLine("6 - Ejercicio 6");
-                Console.WriteLine("0 - Salir");
-                opc = Convert.ToInt32(Console.ReadLine());
+                do
+                {
+                    Console.Clear();
+                    Console.WriteLine("Escoja una opcion");
+                    Console.WriteLine("1 - Ejercicio 1");
+                    Console.WriteLine("2 - Ejercicio 2");
+                    Console.WriteLine("3 - Ejercicio 3");
+                    Console.WriteLine("4 - Ejercicio 4");
+                    Console.WriteLine("5 - Ejercicio 5");
+                    Console.WriteLine("6 - Ejercicio 6");
+                    Console.WriteLine("0 - Salir");
+                    isNumber = int.TryParse(Console.ReadLine(), out opc);
+                } while (isNumber == false || opc < 0);
                 switch (opc)
                 {
                     case 1:
@@ -72,8 +80,13 @@ namespace GuiaPractica5MC
 
         private static void Ejercicio2()
         {
-            Console.WriteLine("Ingrese un numero entero");
-            int num = Convert.ToInt32(Console.ReadLine());
+            int num = 0;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Ingrese un numero entero");
+                isNumber = int.TryParse(Console.ReadLine(), out num);
+            } while (isNumber == false);
             Console.WriteLine(PositivoNegativo(num));
         }
         static string PositivoNegativo(int numero)
@@ -94,8 +107,13 @@ namespace GuiaPractica5MC
 
         private static void Ejercicio3()
         {
-            Console.WriteLine("Ingrese un numero para sacar el factorial");
-            int num = Convert.ToInt32(Console.ReadLine());
+            int num = 0;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Ingrese un numero para sacar el factorial");
+                isNumber = int.TryParse(Console.ReadLine(), out num);
+            } while (isNumber == false || num <= 0);
             
             Console.WriteLine("Factorial de {0} es {1}", num, Factorial(num));
         }
@@ -112,14 +130,20 @@ namespace GuiaPractica5MC
 
         private static void Ejercicio4()
         {
-            Console.WriteLine("Ingresa el telefono numero 1");
-            string tel1 = Console.ReadLine();
-            Console.WriteLine("Ingresa el telefono numero 2");
-            string tel2 = Console.ReadLine();
-            Console.WriteLine("Ingresa el telefono numero 3");
-            string tel3 = Console.ReadLine();
-            Console.WriteLine("Ingresa el telefono numero 4");
-            string tel4 = Console.ReadLine();
+            string tel1, tel2, tel3, tel4;
+
+            do
+            {
+                Console.WriteLine("Ingresa el telefono numero 1");
+                tel1 = Console.ReadLine();
+                Console.WriteLine("Ingresa el telefono numero 2");
+                tel2 = Console.ReadLine();
+                Console.WriteLine("Ingresa el telefono numero 3");
+                tel3 = Console.ReadLine();
+                Console.WriteLine("Ingresa el telefono numero 4");
+                tel4 = Console.ReadLine();
+            } while (string.IsNullOrEmpty(tel1) || string.IsNullOrEmpty(tel2) || string.IsNullOrEmpty(tel3) || string.IsNullOrEmpty(tel4));
+            
 
             Console.WriteLine("Ganador: {0}", NumerosAleatorios(tel1, tel2, tel3, tel4));
         }
@@ -136,10 +160,16 @@ namespace GuiaPractica5MC
 
         private static void Ejercicio5()
         {
-            Console.WriteLine("Ingrese el precio del producto");
-            double precio = Convert.ToDouble(Console.ReadLine());
-            Console.WriteLine("Ingrese el descuento del producto");
-            double descuento = Convert.ToDouble(Console.ReadLine());
+            bool isDouble;
+            double precio = 0.0, descuento = 0.0;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Ingrese el precio del producto");
+                isNumber = double.TryParse(Console.ReadLine(), out precio);
+                Console.WriteLine("Ingrese el descuento del producto");
+                isDouble = double.TryParse(Console.ReadLine(), out descuento);
+            } while (isNumber == false || isDouble == false);
 
             Console.WriteLine("Descuento: {0:N2}", Descuento(precio, descuento));
         }
@@ -150,16 +180,36 @@ namespace GuiaPractica5MC
 
         private static void Ejercicio6()
         {
-            Console.WriteLine("Promedio: {0}", PromedioNotas(5.5, 4.6, 8.0, 9.5, 10.0));
+            bool isNumber;
+            int num;
+            List<double> notas = new List<double>();
+            double nota = 0.0;
+
+            do
+            {
+                Console.WriteLine("Ingrese la cantidad de notas que ingresará");
+                isNumber = int.TryParse(Console.ReadLine(), out num);
+            } while (isNumber == false || num <= 0);
+
+            for (int i = 0; i < num; i++)
+            {
+                do
+                {
+                    Console.WriteLine("Ingrese la nota {0}", i+1);
+                    isNumber = double.TryParse(Console.ReadLine(), out nota);
+                } while (isNumber == false || nota < 0);
+                notas.Add(nota);
+            }
+            Console.WriteLine("Promedio: {0}", PromedioNotas(notas));
         }
-        static double PromedioNotas(params double[] notas)
+        static double PromedioNotas(List<double> notas)
         {
             double total = 0.0;
             foreach (var item in notas)
             {
                 total += item;
             }
-            return total / notas.Length;
+            return total / notas.Count;
         }
     }
 }
